@@ -1,0 +1,7 @@
+jenkins:
+  systemMessage: "Jenkins configured automatically by Jenkins Configuration as Code plugin\n\n"
+tool:
+  git:
+    installations:
+      - name: git
+        home: /usr/bin/git

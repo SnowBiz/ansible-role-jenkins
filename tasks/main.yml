@@ -63,5 +63,29 @@
     path: "{{ jenkins_home }}/init.groovy.d/basic-security.groovy"
     state: absent
 
+- name: Check if JCasC directory exists.
+  stat:
+   path: /jenkins/casc_configs
+  register: my_folder
+
+- name: "echo if directory already existed"
+  debug:
+    msg: "the JCasC directory already existed"
+  when: my_folder.stat.exists
+
+- name: "Create JCasC directory if it does not exist"
+  file:
+   path: /jenkins/casc_configs
+   state: directory
+   mode: 0755
+   group: root
+   owner: root
+  when: my_folder.stat.exists == false
+
+- name: Copy JCasC files into /jenkins/casc_configs
+  copy:
+    src: /tmp/scripts/ansible/roles/ansible-role-jenkins/files/
+    dest: /jenkins/casc_configs
+
 # Update Jenkins and install configured plugins.
 - include_tasks: plugins.yml
